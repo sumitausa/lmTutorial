@@ -1,0 +1,61 @@
+---
+title: "ReadMe"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# lmTutorial
+
+## Excercise for the understanding lm on the states dataset
+
+The dataset compares the data from 6 states , containing information about the region, population, are, density , csat, vsat, percent, expense
+
+The Excercise involves changing the lm equation to include a new interation to see how the csat value is affected
+
+
+
+```{r}
+setwd("C:/Users/s/Downloads/linear_regression/linear_regression")
+getwd() # where am I?
+list.files("dataSets") # files in the dataSets folder
+
+## Load the states data
+## ────────────────────────
+
+# read the states data
+states.data <- readRDS("dataSets/states.rds") 
+```
+
+
+##   1. Add on to the regression equation that you created in exercise 1 by
+##      generating an interaction term and testing the interaction.
+
+```{r}
+sat.expense.metro.by.percent <- lm(csat ~ expense*metro,
+                             data=states.data) 
+
+print(coef(summary(sat.expense.metro.by.percent)))
+```
+
+Then we add  region to the model
+
+```{r}
+sat.expense.region.metro.by.percent <- lm(csat ~ expense*metro*region,
+                                    data=states.data)
+
+```
+
+Looking at the summary it seems like there is significant difference between the regions
+
+
+# compare both using the anova() function
+
+```{r}
+anova(sat.expense.metro.by.percent, sat.expense.region.metro.by.percent)
+```
